@@ -1,4 +1,4 @@
-const baseUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001/anecdotes'
+const baseUrl = 'http://localhost:3001/anecdotes'
 
 // GET
 const getAll = async () => {
