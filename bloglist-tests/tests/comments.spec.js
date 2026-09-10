@@ -12,6 +12,7 @@ test.describe('Comments', () => {
       name: 'Casey Commenter',
       password: 'salainen',
     })
+
     const { token } = await apiLogin(request, { username: 'commenter', password: 'salainen' })
 
     blog = await createBlogViaApi(request, token, {
