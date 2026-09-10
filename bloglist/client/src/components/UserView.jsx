@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useUsers } from '../hooks/useUsers'
 
+// Single user detail component
 const UserView = () => {
   const { id } = useParams()
   const { users, isPending, isError } = useUsers()
@@ -23,7 +24,7 @@ const UserView = () => {
   return (
     <div>
       <h2>{user.name}</h2>
-      <p>added blogs</p>
+      <h3>added blogs</h3>
       <ul>
         {user.blogs.map((blog) => (
           <li key={blog.id}>{blog.title}</li>

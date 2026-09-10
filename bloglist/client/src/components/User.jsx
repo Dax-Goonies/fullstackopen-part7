@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { TableRow, TableCell } from '@mui/material'
 
-// Blog component to display individual blog information
+// User list headers component
 const User = ({ user }) => (
   <TableRow>
     <TableCell>

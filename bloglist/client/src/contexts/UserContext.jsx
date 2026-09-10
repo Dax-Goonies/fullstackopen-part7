@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer } from 'react'
 
+// User context
 const userReducer = (state, action) => {
   switch (action.type) {
     case 'SET':

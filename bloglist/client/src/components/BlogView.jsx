@@ -1,59 +1,20 @@
 import { useParams } from 'react-router-dom'
-import styled from 'styled-components'
+import { useField } from '../hooks/useField'
 import { Typography } from '@mui/material'
-
-const StyledView = styled.div`
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-top: 15px;
-  max-width: 600px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-`
-
-const Row = styled.div`
-  margin-bottom: 10px;
-`
-
-const ButtomRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-`
-
-const StyledLike = styled.button`
-  background: white;
-  color: dodgerblue;
-  padding: 8px 16px;
-  border: 1px solid dodgerblue;
-  border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  text-transform: uppercase;
-  &:hover {
-    background: dodgerblue;
-    color: white;
-  }
-`
-
-const StyledRemove = styled.button`
-  background: white;
-  color: crimson;
-  padding: 8px 16px;
-  border: 1px solid crimson;
-  border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  text-transform: uppercase;
-  &:hover {
-    background: crimson;
-    color: white;
-  }
-`
+import {
+  StyledView,
+  Row,
+  ButtomRow,
+  StyledLike,
+  StyledRemove,
+  StyledAddComment,
+  StyledCommentInput
+} from '../styles'
 
 // Single blog detail component
-const BlogView = ({ blogs, handleLike, handleDelete, user }) => {
+const BlogView = ({ blogs, handleLike, handleDelete, addComment, user }) => {
   const id = useParams().id
+  const [comment, resetComment] = useField('text')
 
   if (!blogs) {
     return <div>loading blogs...</div>
@@ -67,6 +28,13 @@ const BlogView = ({ blogs, handleLike, handleDelete, user }) => {
 
   const showRemoveButton =
     user && blog.user && user.username === blog.user.username
+
+  // Comment logic
+  const handleAddComment = (event) => {
+    event.preventDefault()
+    addComment(blog.id, comment.value)
+    resetComment()
+  }
 
   return (
     <StyledView>
@@ -85,7 +53,7 @@ const BlogView = ({ blogs, handleLike, handleDelete, user }) => {
       </Row>
       <Row>
         <Typography variant="body2" color="textSecondary">
-          Added by {blog.user?.name}
+          Added by {blog.user.name}
         </Typography>
       </Row>
       <ButtomRow>
@@ -95,6 +63,16 @@ const BlogView = ({ blogs, handleLike, handleDelete, user }) => {
           <StyledRemove onClick={() => handleDelete(blog)}>remove</StyledRemove>
         )}
       </ButtomRow>
+      <h3>comments</h3>
+      <form onSubmit={handleAddComment}>
+        <StyledCommentInput {...comment} placeholder="add a comment" />
+        <StyledAddComment type="submit">ADD COMMENT</StyledAddComment>
+      </form>
+      <ul>
+        {(blog.comments || []).map((comment, i) => (
+          <li key={i}>{comment}</li>
+        ))}
+      </ul>
     </StyledView>
   )
 }

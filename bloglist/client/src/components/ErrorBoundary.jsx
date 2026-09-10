@@ -1,6 +1,7 @@
 import React from 'react'
 import { AppBar, Toolbar, Typography } from '@mui/material'
 
+// Class component for Error Boundaries
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props)
@@ -39,4 +40,5 @@ class ErrorBoundary extends React.Component {
     return this.props.children
   }
 }
+
 export default ErrorBoundary

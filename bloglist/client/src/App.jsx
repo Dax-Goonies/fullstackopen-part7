@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Container, AppBar, Toolbar, Button, Typography } from '@mui/material'
 import { Routes, Route, Link, useNavigate } from 'react-router-dom'
 import BlogForm from './components/BlogForm'
 import BlogList from './components/BlogList'
 import BlogView from './components/BlogView'
+import ErrorBoundary from './components/ErrorBoundary'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notifications'
 import UsersList from './components/UsersList'
@@ -17,7 +18,13 @@ import { useUserValue, useUserDispatch } from './contexts/UserContext'
 import { useBlogs } from './hooks/useBlogs'
 
 const App = () => {
-  const { blogs, isPending, isError, createBlog, vote, removeBlog } = useBlogs()
+  const {
+    blogs,
+    createBlog,
+    vote,
+    removeBlog,
+    addComment
+  } = useBlogs()
   const user = useUserValue()
   const userDispatch = useUserDispatch()
   const navigate = useNavigate()
@@ -114,36 +121,40 @@ const App = () => {
 
         <Notification />
 
-        <Routes>
-          <Route
-            path="/login"
-            element={
-              <div>
-                <h2>Log in to application</h2>
-                <LoginForm handleLogin={handleLogin} />
-              </div>
-            }
-          />
-          <Route path="/" element={<BlogList user={user} blogs={blogs} />} />
-          <Route
-            path="/blogs/:id"
-            element={
-              <BlogView
-                blogs={blogs}
-                handleLike={handleLike}
-                handleDelete={handleDelete}
-                user={user}
-              />
-            }
-          />
-          <Route path="/users" element={<UsersList />} />
-          <Route path="/users/:id" element={<UserView />} />
-          <Route
-            path="/blogs/new"
-            element={<BlogForm createBlog={handleCreate} />}
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <ErrorBoundary>
+          <Routes>
+            <Route
+              path="/login"
+              element={
+                <div>
+                  <h2>Log in to application</h2>
+                  <LoginForm handleLogin={handleLogin} />
+                </div>
+              }
+            />
+            <Route path="/" element={<BlogList user={user} blogs={blogs} />} />
+            <Route
+              path="/blogs/:id"
+              element={
+                <BlogView
+                  blogs={blogs}
+                  handleLike={handleLike}
+                  handleDelete={handleDelete}
+                  addComment={addComment}
+                  user={user}
+                />
+              }
+            />
+            <Route path="/users" element={<UsersList />} />
+            <Route path="/users/:id" element={<UserView />} />
+            <Route
+              path="/blogs/new"
+              element={<BlogForm createBlog={handleCreate} />}
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </ErrorBoundary>
+
       </div>
     </Container>
   )

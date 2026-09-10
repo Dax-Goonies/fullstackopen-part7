@@ -1,7 +1,7 @@
 import { Alert } from '@mui/material'
 import { useNotificationValue } from '../contexts/NotificationContext'
 
-// Notifications component
+// Notification component
 const Notification = () => {
   const notification = useNotificationValue()
 

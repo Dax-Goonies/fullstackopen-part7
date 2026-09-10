@@ -1,5 +1,6 @@
 const baseUrl = '/api/users'
 
+// Fetch all the users for UserView
 const getAll = async () => {
   const response = await fetch(baseUrl)
   if (!response.ok) {

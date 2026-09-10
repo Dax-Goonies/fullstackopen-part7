@@ -1,8 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import blogService from '../services/blogs'
+import commentService from '../services/comments'
 import { useNotify } from '../contexts/NotificationContext'
 
-// Blogs custom hook
+// Custom hook: useBlogs
 export const useBlogs = () => {
   const queryClient = useQueryClient()
   const notify = useNotify()
@@ -24,7 +25,7 @@ export const useBlogs = () => {
     }
   })
 
-  // PUT: Vote
+  // PUT: Vote for blog
   const voteMutation = useMutation({
     mutationFn: ({ id, blog }) => blogService.update(id, blog),
     onSuccess: (updatedBlog) => {
@@ -48,6 +49,18 @@ export const useBlogs = () => {
     }
   })
 
+  // POST: Add new comment
+  const addCommentMutation = useMutation({
+    mutationFn: ({ blogId, comment }) => commentService.create(blogId, comment),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['blogs'] })
+      notify('comment added')
+    },
+    onError: () => {
+      notify('failed to add comment', 'error')
+    }
+  })
+
   // Export
   return {
     blogs: result.data,
@@ -55,6 +68,8 @@ export const useBlogs = () => {
     isError: result.isError,
     createBlog: (blogObject) => newBlogMutation.mutateAsync(blogObject),
     vote: (id, blog) => voteMutation.mutate({ id, blog }),
-    removeBlog: (id) => removeMutation.mutateAsync(id)
+    removeBlog: (id) => removeMutation.mutateAsync(id),
+    addComment: (blogId, comment) =>
+      addCommentMutation.mutate({ blogId, comment })
   }
 }

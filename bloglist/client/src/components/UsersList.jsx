@@ -9,7 +9,8 @@ import {
 } from '@mui/material'
 import User from './User'
 
-const UsersList = ({ user, blogs }) => {
+// List of users component
+const UsersList = () => {
   const { users, isPending, isError } = useUsers()
 
   if (isPending) return <div>loading users...</div>
