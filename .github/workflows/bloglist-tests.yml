@@ -33,6 +33,7 @@ jobs:
         env:
           TEST_MONGODB_URI: mongodb://localhost:27017/bloglist-test
           SECRET: ci-test-secret-value
+          PORT: 3003
 
       - name: Install client dependencies
         working-directory: bloglist/client
