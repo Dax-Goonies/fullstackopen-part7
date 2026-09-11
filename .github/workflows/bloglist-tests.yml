@@ -23,18 +23,6 @@ jobs:
         working-directory: bloglist/server
         run: npm ci
 
-      - name: Manually test server startup
-        working-directory: bloglist/server
-        run: |
-          npm run start:test &
-          sleep 5
-          curl -v http://localhost:3003/api/blogs || echo "SERVER DID NOT RESPOND"
-          kill %1 || true
-        env:
-          TEST_MONGODB_URI: mongodb://localhost:27017/bloglist-test
-          SECRET: ci-test-secret-value
-          PORT: 3003
-
       - name: Install client dependencies
         working-directory: bloglist/client
         run: npm ci
